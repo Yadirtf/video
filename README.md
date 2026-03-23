@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Aquí tienes la versión actualizada y refinada del documento de especificaciones técnicas para tu agente. He ajustado el enfoque hacia el nicho de camisas deportivas de alta calidad y modificado los elementos visuales para priorizar el contacto digital (WhatsApp) en lugar de una ubicación física.
 
-## Getting Started
+Especificación Técnica: Generador de Video Dinámico para E-commerce Deportivo
+1. Objetivo del Proyecto
+Desarrollar una aplicación con Next.js y Remotion para automatizar la creación de videos promocionales de camisas deportivas de alta gama. El sistema debe permitir la unión de dos clips de video y la superposición de capas de texto dinámicas que incentiven la conversión directa a WhatsApp y redes sociales.
 
-First, run the development server:
+2. Estructura de la Composición
+El agente debe programar una composición (MainComposition) con las siguientes características:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Entrada de Media: Dos archivos de video (.mp4) cargados desde el directorio público.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Sincronización: El Video A debe transicionar al Video B de forma fluida. Se recomienda un ligero solapamiento (overlap) de 5 a 10 cuadros para evitar cortes bruscos.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Dimensiones: Formato vertical (9:16) optimizado para Reels de Instagram y TikTok, resaltando los detalles de las telas y escudos de las prendas.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Capas de Información y Overlays (Actualizado)
+En lugar de ubicación física, el video debe centrarse en la identidad de marca y el canal de venta:
 
-## Learn More
+Brand & Product Tag: Un texto destacado que mencione el nombre del establecimiento y una breve descripción de valor (ej: "Calidad Premium en cada detalle" o "Camisas Deportivas de Alta Gama").
 
-To learn more about Next.js, take a look at the following resources:
+Call to Action (WhatsApp): Dado que es un emprendimiento digital, este es el elemento más importante. Debe aparecer un número de celular claro, preferiblemente acompañado de un ícono de WhatsApp animado.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Venta Directa: Un banner inferior que indique que los pedidos se realizan exclusivamente por redes sociales o mensaje directo, reforzando la exclusividad del servicio personalizado.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+4. Lógica de Animación (Argumentos Técnicos)
+Para asegurar un acabado profesional, el agente debe implementar:
 
-## Deploy on Vercel
+Funciones de Spring: Las apariciones del número de WhatsApp deben usar spring para generar un efecto de "rebote" que capte la atención del cliente.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Loop de Brillo: Si el agente es avanzado, puede programar un efecto de brillo (overlay de gradiente) que pase sobre el texto del número de celular cada 3 segundos para mantener el foco visual ahí.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Tipografía Deportiva: Utilizar fuentes tipográficas de estilo "Bold" o "Athletic" (ej: Roboto Condensed o fuentes tipo Jersey) para ser coherente con el producto vendido.
+
+5. Configuración de Props Dinámicas
+El código debe estar preparado para recibir estos datos como props, permitiendo cambios rápidos sin tocar el código base:
+
+TypeScript
+{
+  businessName: string;      // Nombre del negocio
+  description: string;       // "Calidad Premium", "Telas importadas", etc.
+  whatsappNumber: string;    // El contacto directo
+  socialMediaHandle: string; // @usuario de la tienda
+}
+6. Argumento de Venta del Sistema
+"Al ser un emprendimiento basado en ventas por catálogo y redes sociales, el uso de Remotion permite generar un video nuevo para cada modelo de camisa en cuestión de segundos. Esto elimina la necesidad de un editor de video humano y permite que el contenido sea 100% fiel a la calidad del producto físico."
