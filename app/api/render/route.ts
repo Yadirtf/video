@@ -4,7 +4,7 @@ import path from "path";
 import fs from "fs";
 
 export const dynamic = "force-dynamic";
-export const maxDuration = 900; // 15 minutos máximo (para entornos serverless)
+export const maxDuration = 300; // 5 minutos máximo (límite del plan Hobby de Vercel)
 
 export async function GET() {
   const outDir = path.join(process.cwd(), "out");
@@ -33,7 +33,7 @@ export async function GET() {
     const npmCmd = process.platform === "win32" ? "npm.cmd" : "npm";
     execSync(`${npmCmd} run remotion:render`, {
       cwd: process.cwd(),
-      timeout: 600000, // 10 min
+      timeout: 290000, // Just under 5 mins
       stdio: "pipe",
     });
 
