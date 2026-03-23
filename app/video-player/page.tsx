@@ -14,63 +14,6 @@ type DownloadState = "idle" | "rendering" | "downloading" | "done" | "error";
 export default function VideoPlayerPage() {
   const [durations, setDurations] = useState<{ v1: number; v2: number } | null>(null);
   const [metaError, setMetaError] = useState<string | null>(null);
-  const [downloadState, setDownloadState] = useState<DownloadState>("idle");
-  const [downloadError, setDownloadError] = useState<string | null>(null);
-
-  useEffect(() => {
-    async function loadDurations() {
-      try {
-        const [meta1, meta2] = await Promise.all([
-          getVideoMetadata("/video1.mp4"),
-          getVideoMetadata("/video2.mp4"),
-        ]);
-        setDurations({
-          v1: Math.round(meta1.durationInSeconds * FPS),
-          v2: Math.round(meta2.durationInSeconds * FPS),
-        });
-      } catch {
-        setDurations({ v1: 150, v2: 300 });
-        setMetaError("Usando duración estimada");
-      }
-    }
-    loadDurations();
-  }, []);
-
-  const handleDownload = useCallback(async () => {
-    setDownloadError(null);
-    setDownloadState("rendering");
-
-    try {
-      const res = await fetch("/api/render");
-
-      if (!res.ok) {
-        const body = await res.json().catch(() => ({ error: "Error desconocido" }));
-        throw new Error(body.error ?? "Error al renderizar");
-      }
-
-      setDownloadState("downloading");
-
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "video-camisas-deportivas.mp4";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-
-      setDownloadState("done");
-
-      // Vuelve al estado idle después de 4 segundos
-      setTimeout(() => setDownloadState("idle"), 4000);
-    } catch (err) {
-      setDownloadError(err instanceof Error ? err.message : String(err));
-      setDownloadState("error");
-    }
-  }, []);
-
-  // --- Loading state ---
   if (!durations) {
     return (
       <div style={{ minHeight: "100vh", backgroundColor: "#0a0a0a", display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -92,35 +35,6 @@ export default function VideoPlayerPage() {
     video2DurationFrames: durations.v2,
     overlapFrames: OVERLAP_FRAMES,
   };
-
-  // --- Button content by state ---
-  const downloadButtonContent = () => {
-    switch (downloadState) {
-      case "rendering":
-        return (
-          <>
-            <span style={{ display: "inline-block", width: 20, height: 20, border: "3px solid rgba(255,255,255,0.3)", borderTop: "3px solid #fff", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
-            Renderizando video... (2-5 min)
-          </>
-        );
-      case "downloading":
-        return <>"⬇️ Descargando..."</>;
-      case "done":
-        return <>✅ ¡Descarga completada!</>;
-      case "error":
-        return <>❌ Error — Reintentar</>;
-      default:
-        return <>⬇️ Descargar Video MP4</>;
-    }
-  };
-
-  const buttonBg = {
-    idle: "linear-gradient(135deg, #f59e0b, #ef4444)",
-    rendering: "linear-gradient(135deg, #374151, #1f2937)",
-    downloading: "linear-gradient(135deg, #374151, #1f2937)",
-    done: "linear-gradient(135deg, #059669, #047857)",
-    error: "linear-gradient(135deg, #dc2626, #991b1b)",
-  }[downloadState];
 
   return (
     <div style={{ minHeight: "100vh", backgroundColor: "#0a0a0a", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", fontFamily: "'Roboto Condensed', Arial, sans-serif", padding: "40px 20px" }}>
@@ -166,16 +80,15 @@ export default function VideoPlayerPage() {
 
       {/* ─── DOWNLOAD SECTION ─── */}
       <div style={{ marginTop: 24, display: "flex", flexDirection: "column", alignItems: "center", gap: 10, width: "100%", maxWidth: 380 }}>
-        {/* Main download button */}
-        <button
+        <a
+          href="/video-promo.mp4"
+          download="video-camisas-deportivas.mp4"
           className="dl-btn"
-          onClick={() => handleDownload()}
-          disabled={downloadState === "rendering" || downloadState === "downloading"}
           style={{
             width: "100%",
             padding: "16px 28px",
             borderRadius: 14,
-            background: buttonBg,
+            background: "linear-gradient(135deg, #f59e0b, #ef4444)",
             border: "none",
             color: "#fff",
             fontFamily: "'Roboto Condensed', Arial, sans-serif",
@@ -183,36 +96,20 @@ export default function VideoPlayerPage() {
             fontWeight: 900,
             letterSpacing: 2,
             textTransform: "uppercase",
-            cursor: downloadState === "rendering" || downloadState === "downloading" ? "not-allowed" : "pointer",
+            cursor: "pointer",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             gap: 10,
             transition: "all 0.2s ease",
+            textDecoration: "none",
           }}
         >
-          {downloadButtonContent()}
-        </button>
-
-        {/* Status messages */}
-        {downloadState === "rendering" && (
-          <p style={{ color: "#9ca3af", fontSize: 12, letterSpacing: 1, margin: 0, textAlign: "center" }}>
-            ⏳ Remotion está generando el MP4... No cierres esta página.
-            <br />El proceso puede tardar <strong style={{ color: "#f59e0b" }}>2 a 5 minutos</strong>.
-          </p>
-        )}
-
-        {downloadState === "done" && (
-          <p style={{ color: "#6ee7b7", fontSize: 13, margin: 0 }}>
-            El archivo <strong>video-camisas-deportivas.mp4</strong> ha sido descargado.
-          </p>
-        )}
-
-        {downloadState === "error" && downloadError && (
-          <p style={{ color: "#fca5a5", fontSize: 12, margin: 0, textAlign: "center" }}>
-            {downloadError}
-          </p>
-        )}
+          ⬇️ Descargar Video MP4
+        </a>
+        <p style={{ color: "#9ca3af", fontSize: 12, letterSpacing: 1, margin: 0, textAlign: "center" }}>
+          Si el archivo no descarga, asegúrate de generar el video<br/>primero localmente con <code style={{color: "#f59e0b"}}>npm run remotion:render</code> en la terminal.
+        </p>
       </div>
 
       {/* Contact */}
