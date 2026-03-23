@@ -1,8 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
 import { Player } from "@remotion/player";
-import { getVideoMetadata } from "@remotion/media-utils";
 import { MainComposition } from "../../remotion/MainComposition";
 import Link from "next/link";
 
@@ -12,19 +10,9 @@ const OVERLAP_FRAMES = 8;
 type DownloadState = "idle" | "rendering" | "downloading" | "done" | "error";
 
 export default function VideoPlayerPage() {
-  const [durations, setDurations] = useState<{ v1: number; v2: number } | null>(null);
-  const [metaError, setMetaError] = useState<string | null>(null);
-  if (!durations) {
-    return (
-      <div style={{ minHeight: "100vh", backgroundColor: "#0a0a0a", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <div style={{ textAlign: "center" }}>
-          <div style={{ width: 48, height: 48, border: "4px solid #f59e0b", borderTop: "4px solid transparent", borderRadius: "50%", animation: "spin 1s linear infinite", margin: "0 auto 20px" }} />
-          <p style={{ color: "#9ca3af", fontFamily: "Arial, sans-serif", fontSize: 16, letterSpacing: 2 }}>Cargando videos...</p>
-          <style>{`@keyframes spin { to { transform: rotate(360deg); } } @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }`}</style>
-        </div>
-      </div>
-    );
-  }
+  // Los videos son activos estáticos con duraciones conocidas, las codificamos de una vez
+  // evitando que el cliente tenga que hacer solicitudes fetch costosas.
+  const durations = { v1: 372, v2: 639 }; // frames (12.4s y 21.3s * 30fps)
 
   const totalFrames = durations.v1 + durations.v2 - OVERLAP_FRAMES;
   const props = {
@@ -54,7 +42,6 @@ export default function VideoPlayerPage() {
         <p style={{ color: "#9ca3af", margin: 0, fontSize: 14, letterSpacing: 2 }}>
           Camisas Deportivas de Alta Calidad
         </p>
-        {metaError && <p style={{ color: "#f59e0b", fontSize: 11, marginTop: 4 }}>⚠️ {metaError}</p>}
       </div>
 
       {/* Player */}
