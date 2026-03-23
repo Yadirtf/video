@@ -7,8 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "remotion:studio": "remotion studio remotion/Root.tsx",
-    "remotion:render": "remotion render remotion/Root.tsx MainComposition out/video-promo.mp4"
+    "remotion:studio": "remotion studio remotion/index.ts",
+    "remotion:render": "remotion render remotion/index.ts MainComposition out/video-promo.mp4"
   },
   "dependencies": {
     "@remotion/cli": "^4.0.438",

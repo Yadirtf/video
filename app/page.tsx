@@ -21,6 +21,12 @@ export default function Home() {
         padding: "40px 20px",
       }}
     >
+      <style>{`
+        .whatsapp-btn:hover {
+          background-color: rgba(37,211,102,0.2) !important;
+          transform: scale(1.05) !important;
+        }
+      `}</style>
       {/* Hero */}
       <div
         style={{
@@ -117,7 +123,11 @@ export default function Home() {
       </Link>
 
       {/* Contact */}
-      <div
+      <a
+        className="whatsapp-btn"
+        href="https://wa.me/573114612022?text=Hola%20Carolina%20Vallejo%2C%20quiero%20m%C3%A1s%20informaci%C3%B3n%20sobre%20los%20productos.%20%C2%BFMe%20podr%C3%ADas%20compartir%20fotos?"
+        target="_blank"
+        rel="noopener noreferrer"
         style={{
           display: "flex",
           alignItems: "center",
@@ -126,6 +136,9 @@ export default function Home() {
           borderRadius: 50,
           backgroundColor: "rgba(37,211,102,0.1)",
           border: "1px solid rgba(37,211,102,0.3)",
+          textDecoration: "none",
+          transition: "transform 0.2s, background-color 0.2s",
+          cursor: "pointer",
         }}
       >
         <svg width="28" height="28" viewBox="0 0 24 24" fill="#25d366">
@@ -141,7 +154,7 @@ export default function Home() {
         >
           3114612022 - Carolina Vallejo
         </span>
-      </div>
+      </a>
 
       <p
         style={{
