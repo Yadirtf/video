@@ -94,9 +94,6 @@ export default function VideoPlayerPage() {
         >
           ⬇️ Descargar Video MP4
         </a>
-        <p style={{ color: "#9ca3af", fontSize: 12, letterSpacing: 1, margin: 0, textAlign: "center" }}>
-          Si el archivo no descarga, asegúrate de generar el video<br/>primero localmente con <code style={{color: "#f59e0b"}}>npm run remotion:render</code> en la terminal.
-        </p>
       </div>
 
       {/* Contact */}
